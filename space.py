@@ -4,6 +4,7 @@ This class represents a finite space which can be either
 """
 
 import numpy as np
+from random import randrange
 from abc import ABC, abstractmethod
 
 class Space(ABC):
@@ -29,7 +30,8 @@ class Space(ABC):
 
 		pass
 
-	def pack_space(self):
+	@abstractmethod
+	def pack_space(self,r=randrange(10)):
 		"""
 		Packs the space with spheres to maximize density
 		:return (bool) -> success of pack attempt
@@ -38,11 +40,27 @@ class Space(ABC):
 		pass
 
 	@abstractmethod
-	def compute_density(self):
+	def deflate_space(self):
 		"""
-		Compute the density 
+		Deflate the space to a lower dimension
 		"""
 
+		pass
+
+	@abstractmethod
+	def inflate_space(self):
+		"""
+		Inflate the space to a higher dimension
+		"""
+
+		pass
+
+	@abstractmethod
+	def compute_density(self):
+		"""
+		Compute the density
+		"""
+		
 		pass
 
 	@abstractmethod
