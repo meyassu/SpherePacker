@@ -1,5 +1,5 @@
 """
-This class represents a finite space which can be either
+This abstract class represents a finite space which can be either
 	2-dimensional or 3-dimensional. 
 """
 
