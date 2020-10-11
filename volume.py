@@ -1,20 +1,20 @@
 """
-This class represents a finite plane.
+This class represents a finite 3-dimensional region.
 """
 
 import numpy as np
 from SpherePacker import Space
 
-class Plane(Space):
+class Volume(Space):
 	def __init__(self, space_id, space_dimension):
 		"""
-		An initialization for a 2-dimensional space
+		An initialization for a 3-dimensional space
 		:param space_id: (str) -> an id to differentiate different spaces with identical dimensions
 		:param space_dimension: tuple(int, int, int) -> (length,width,height) integer tuple,
 		describing the space
 		"""
 
-		super().__init__(space_id,space_dimension);
+		super().__init__(space_id, space_dimension);
 		# construct grid
 		
-		# create empty array of circles
+		# create empty array of spheres
