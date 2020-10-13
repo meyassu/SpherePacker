@@ -15,6 +15,12 @@ class Plane(Space):
 		"""
 
 		super().__init__(space_id,space_dimension);
+		"""
+		a set of unit vectors describing the tilt between the center of the circles in layer i and layer i+1, 
+		these values simplify coordinate resolution during rendering
+		"""
+		self.y_basis_vectors = None;	 
+
 		# construct grid
 		
 		# create empty array of circles
