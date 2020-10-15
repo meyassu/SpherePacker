@@ -8,7 +8,7 @@ from random import randrange
 from abc import ABC, abstractmethod
 
 class Space(ABC):
-	def __init__(self, space_id, space_dimension):
+	def __init__(self, space_id, space_dimensions):
 		"""
 		A general initialization for a given region
 		:param space_id: (str) -> an id to differentiate different spaces with identical dimensions
@@ -16,7 +16,7 @@ class Space(ABC):
 		"""
 		
 		self.space_id = space_id;
-		self.space_dimension = space_dimension;
+		self.space_dimensions = space_dimensions;
 		
 
 	@abstractmethod
@@ -24,16 +24,19 @@ class Space(ABC):
 		"""
 		Insert a sphere at a given position in the space
 		:param sphere: (Sphere) -> a sphere if the space is 3-dimensional and a circle if the space is 2-dimensional
-		:param pos: (int) the coordinate point of the center of the sphere
+		:param pos: (int) -> the coordinate point of the center of the sphere
 		:return: (bool) -> success of insertion attempt
 		"""
 
 		pass
 
 	@abstractmethod
-	def pack_space(self, r=randrange(10)):
+	def pack_space(self, r=randrange(10), initial_pos=None, lattice_type):
 		"""
 		Packs the space with spheres to maximize density
+		:param r: (int) -> the radius of the spheres which defaults to a random value
+		:param initial_pos: tuple -> the position of the first sphere in the space which defaults None since it will be determined later
+		:param lattice_type: (string) -> the type of lattice constructed during packing 
 		:return: None
 		"""
 
