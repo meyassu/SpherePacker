@@ -35,9 +35,10 @@ class Space(ABC):
 		"""
 		Packs the space with spheres to maximize density
 		:param r: (int) -> the radius of the spheres which defaults to a random value
-		:param initial_pos: tuple -> the position of the first sphere in the space which defaults None since it will be determined later
+		:param initial_pos: tuple -> integer tuple which is the position of the first sphere in the 
+								     space which defaults to None since it will be determined later
 		:param lattice_type: (string) -> the type of lattice constructed during packing 
-		:return: None
+		:return: (bool) -> success of pack attempt
 		"""
 
 		pass

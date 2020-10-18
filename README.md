@@ -1,1 +1,1 @@
-## sphere-packer
+## Sphere Packer
