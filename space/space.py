@@ -20,11 +20,10 @@ class Space(ABC):
 		
 
 	@abstractmethod
-	def insert_circle(self, sphere, pos):
+	def insert_circle(self, sphere):
 		"""
 		Insert a sphere at a given position in the space
 		:param sphere: (Sphere) -> a sphere if the space is 3-dimensional and a circle if the space is 2-dimensional
-		:param pos: (int) -> the coordinate point of the center of the sphere
 		:return: (bool) -> success of insertion attempt
 		"""
 

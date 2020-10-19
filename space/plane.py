@@ -20,7 +20,7 @@ class Plane(Space):
 		# create empty array of circles
 		circles = [];
 
-	def insert_circle(self, sphere, pos):
+	def insert_circle(self, sphere):
 		# add circle
 		circles.append(sphere);
 
@@ -48,12 +48,24 @@ class Plane(Space):
 		# insert a circle at initial_pos
 		self.insert_circle(Circle(r, initial_pos));
 
-		x_max = space_dimensions[0];
-		y_max = space_dimensions[1];
-		x_cur = r;
-		y_cur = r;
+		x_max = self.space_dimensions[0];
+		y_max = self.space_dimensions[1];
+		x_cur = initial_pos[0];
+		y_cur = initial_pos[1];
 		row_cur = range(r, x_max, 2*r);
-		# pack exhaustively to the right
+		# pack upwards
+		_linear_upwards(initial_pos);
+		# pack downwards
+		_linear_downwards(initial_pos);
+
+	def _linear_upwards(initial_pos):
+
+		x_max = self.space_dimensions[0];
+		y_max = self.space_dimensions[1];
+		x_cur = initial_pos[0];
+		y_cur = initial_pos[1];
+		row_cur = range(r, x_max, 2*r);
+		# pack
 		for x _cur in row_cur:
 			
 			# if edge of next circle is out of bounds on the right and packing is going from left to right
@@ -93,6 +105,10 @@ class Plane(Space):
 			if y_cur >= y_max:
 				break;
 			insert_circle(Circle(r,pos_cur));
+
+	def _linear_downwards:
+
+		pass
 
 	def _pack_hexagonaly(self, r, initial_pos):
 		if(initial_post == None):
