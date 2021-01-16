@@ -22,27 +22,31 @@ class Plane(Space):
 		# add circle
 		self.circles.append(sphere);
 
-		return True;
-
 
 	def pack_space(self, r=randrange(10), initial_pos=None, lattice_type):
-		# verify that initial_pos is valid
-		if initial_pos[0] > self.space_dimensions[0] or initial_pos[1] > self.space_dimensions[1]:
-			return False;
+		# correct initial_pos if circle juts out of space in some way
+		# x overflow
+		if initial_pos[0] + r > self.space_dimensions[0] 
+			initial_pos[0] = self.space_dimensions[0] - r
+		# x underflow
+		elif initial_pos - r < self.space_dimensions[0]
+			initial_pos[0] = r
+		# y overflow
+		elif initial_pos[1] + r > self.space_dimensions[1]:
+			initial_pos[1] = self.space_dimensions[1] - r
+		# y underflow
+		elif initial_pos[1] - r < self.space_dimensions[1]
+			initial_pos[1] = r
 
 		if lattice_type == 'linear':
 			self._pack_linearly(r, initial_pos);
 		elif lattice_type == 'hexagonal':
 			self._pack_hexagonaly(self, r, initial_pos);
 
-
-		return True;
+			
 
 	def _pack_linearly(self, r, initial_pos=(r,r)):
 		
-		# insert a circle at initial_pos
-		self.insert_circle(Circle(r, initial_pos));
-
 		# pack upwards
 		self._linear_upwards(initial_pos);
 		# pack downwards
@@ -53,53 +57,65 @@ class Plane(Space):
 		x_max = self.space_dimensions[0];
 		y_max = self.space_dimensions[1];
 
-		# start packing from right to left
-		# the endpoint for range is x_max + 2 * r so that x_max is included in the sequence
-		row_cur = range(initial_pos[0], x_max + 2 * r, 2 * r);
-		for x _cur in row_cur:
-			
-			# if edge of next circle is out of bounds on the right and packing is going from left to right
-			# shift it onto next layer (update y_cur,x_cur), modify row_cur to go from right to left
-			if x_cur + 3 * r > x_max and row_cur[-1] == x_max:
-				overflow_distance = (x_cur + 3 * r) - x_max;
-				
-				# save x_cur, y_cur
-				x_old = x_cur;
-				y_old = y_cur;
-				
-				# shift circle onto next layer
-				x_cur = x_max - r;
-				y_cur = y_cur + math.sqrt(4 * (r ** 2)  - overflow_distance ** 2); # see the README for a derivation
-				
-				# modify row_cur, now packing is right to left
-				row_cur = range(x_cur, -2 * r, -2 * r);
-
-			# if edge of next circle is out of bounds on the left and packing is going from right to left
-			# shift it onto next layer (update y_cur,x_cur), compute basis vector, modify row_cur
-			elif x_cur - 3 * r < 0 and row_cur[-1] == 0:
-				overflow_distance = -(x_cur - 3 * r);
-
-				# save x_cur, y_cur
-				x_old = x_cur;
-				y_old = y_cur;
-
-				# shift circle onto next layer
-				x_cur = r;
-				y_cur = y_cur + math.sqrt(4 * (r ** 2)  - overflow_distance ** 2);
-
-				# modify row_cur, now packing is left to right
-				row_cur = range(r, x_max, 2*r);				
-
-			# if there is space to shift upwards, quit
+		# start packing from left to right
+		row_cur = range(initial_pos[0], x_max + 2*r, 2*r)
+		y_cur = initial_pos[1]
+		for x_cur in row_cur:
+			# no more space
 			if y_cur + r > y_max:
-				break;
-			# otherwise, insert circle
-			pos_cur = (x_cur,y_cur);
-			insert_circle(Circle(r,pos_cur));
+				break
+			# circle overflows past right boundary while going L->R
+			if x_cur + r > x_max and row_cur[-1] == x_max:
+				overflow_distance = (x_cur + r) - x_max
+				# shift circle onto layer above
+				x_cur = x_max - r
+				y_cur = y_cur + math.sqrt(4 * (r ** 2)  - overflow_distance ** 2) # see the README for a derivation
+				# reverse packing direction to R->L
+				row_cur = range(x_max - r, -2*r, -2*r)
+			# circle overflows past left boundary while going R->L
+			elif x_cur - r < 0 and row_cur[-1] == 0:
+				overflow_distance = -(x_cur - r)
+				# shift circle onto layer above
+				x_cur = r
+				y_cur = y_cur + math.sqrt(4 * (r ** 2)  - overflow_distance ** 2)
+				# reverse packing direction to L->R
+				row_cur = range(r, x_max + 2*r, 2*r)
+
+			circle_cur = Circle((x_cur, y_cur),pos_cur)
+			self.insert_circle(circle_cur)
+
 
 	def _linear_downwards(self, r, initial_pos, r):
+		
+		x_max = self.space_dimensions[0];
+		y_max = self.space_dimensions[1];
 
-		pass
+		# start packing from right to left
+		row_cur = range(initial_pos[0], -2*r, -2*r)
+		y_cur = initial_pos[1]
+		for x_cur in row_cur:
+			# no more space
+			if y_cur - r < 0:
+				break
+			# circle overflows left boundary while going R->L
+			if x_cur - r < 0 and row_cur[-1] == 0:
+				 overflow_distance = -(x_cur - r)
+				 # shift circle onto layer below
+				 x_cur = r
+				 y_cur = y_cur - math.sqrt(4 * (r ** 2)  - overflow_distance ** 2)
+				 # reverse packing direction to L->R
+				 row_cur = range(r, x_max + 2*r, 2*r)
+			# circle overflows past right boundary while going L->R
+			elif x_cur + r > x_max and row_cur[-1] == x_max:
+				overflow_distance = (x_cur + r) - x_max
+				# shift circle onto layer below
+				x_cur = x_max - r
+				y_cur = y_cur - math.sqrt(4 * (r ** 2)  - overflow_distance ** 2)
+				# reverse packing direction to R->L
+				row_cur = range(x_max - r, -2*r, -2*r)
+
+			circle_cur = Circle((x_cur, y_cur),pos_cur)
+			self.insert_circle(circle_cur)
 
 	def _pack_hexagonaly(self, r, initial_pos):
 		if(initial_pos == None):

@@ -2,7 +2,6 @@
 This class represents a finite 3-dimensional region.
 """
 
-import numpy as np
 from SpherePacker import Space
 
 class Volume(Space):

@@ -3,7 +3,6 @@ This abstract class represents a finite space which can be either
 	2-dimensional or 3-dimensional. 
 """
 
-import numpy as np
 from random import randrange
 from abc import ABC, abstractmethod
 

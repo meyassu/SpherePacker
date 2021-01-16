@@ -2,8 +2,6 @@
 This class represents a sphere.
 """
 
-import numpy as np
-
 class Sphere:
 	def __init__(self, radius, center_pos):
 		"""
