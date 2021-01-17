@@ -2,7 +2,8 @@
 This class represents a finite plane.
 """
 import math
-from SpherePacker import Space
+from Space.space import Space
+from Sphere.circle import Circle
 
 class Plane(Space):
 	def __init__(self, space_id, space_dimensions):
@@ -23,20 +24,20 @@ class Plane(Space):
 		self.circles.append(sphere);
 
 
-	def pack_space(self, r=randrange(10), initial_pos=None, lattice_type):
+	def pack_space(self, r, initial_pos, lattice_type):
 		# correct initial_pos if circle juts out of space in some way
 		# x overflow
-		if initial_pos[0] + r > self.space_dimensions[0] 
-			initial_pos[0] = self.space_dimensions[0] - r
+		if initial_pos[0] + r > self.space_dimensions[0]: 
+			initial_pos = (self.space_dimensions[0] - r, initial_pos[1])
 		# x underflow
-		elif initial_pos - r < self.space_dimensions[0]
-			initial_pos[0] = r
+		elif initial_pos[0] - r < self.space_dimensions[0]:
+			initial_pos = (r, initial_pos[1])
 		# y overflow
 		elif initial_pos[1] + r > self.space_dimensions[1]:
-			initial_pos[1] = self.space_dimensions[1] - r
+			initial_pos = (initial_pos[0], self.space_dimensions[1] - r)
 		# y underflow
-		elif initial_pos[1] - r < self.space_dimensions[1]
-			initial_pos[1] = r
+		elif initial_pos[1] - r < self.space_dimensions[1]:
+			initial_pos = (initial_pos[0], r)
 
 		if lattice_type == 'linear':
 			self._pack_linearly(r, initial_pos);
@@ -45,12 +46,12 @@ class Plane(Space):
 
 			
 
-	def _pack_linearly(self, r, initial_pos=(r,r)):
+	def _pack_linearly(self, r, initial_pos):
 		
 		# pack upwards
-		self._linear_upwards(initial_pos);
+		self._linear_upwards(r, initial_pos);
 		# pack downwards
-		self._linear_downwards(initial_pos);
+		self._linear_downwards(r, initial_pos);
 
 	def _linear_upwards(self, r, initial_pos):
 
@@ -81,11 +82,11 @@ class Plane(Space):
 				# reverse packing direction to L->R
 				row_cur = range(r, x_max + 2*r, 2*r)
 
-			circle_cur = Circle((x_cur, y_cur),pos_cur)
+			circle_cur = Circle(r,(x_cur, y_cur))
 			self.insert_circle(circle_cur)
 
 
-	def _linear_downwards(self, r, initial_pos, r):
+	def _linear_downwards(self, r, initial_pos):
 		
 		x_max = self.space_dimensions[0];
 		y_max = self.space_dimensions[1];
@@ -114,7 +115,7 @@ class Plane(Space):
 				# reverse packing direction to R->L
 				row_cur = range(x_max - r, -2*r, -2*r)
 
-			circle_cur = Circle((x_cur, y_cur),pos_cur)
+			circle_cur = Circle(r,(x_cur, y_cur))
 			self.insert_circle(circle_cur)
 
 	def _pack_hexagonaly(self, r, initial_pos):
@@ -122,4 +123,16 @@ class Plane(Space):
 			# set in center
 			pass
 
+		pass
+
+	def deflate_space(self):
+		pass
+
+	def inflate_space(self):
+		pass
+
+	def compute_density(self):
+		pass
+
+	def render(self):
 		pass

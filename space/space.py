@@ -29,7 +29,7 @@ class Space(ABC):
 		pass
 
 	@abstractmethod
-	def pack_space(self, r=randrange(10), initial_pos=None, lattice_type):
+	def pack_space(self, r, initial_pos, lattice_type):
 		"""
 		Packs the space with spheres to maximize density
 		:param r: (int) -> the radius of the spheres which defaults to a random value
