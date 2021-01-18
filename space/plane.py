@@ -50,10 +50,12 @@ class Plane(Space):
 		# insert origin circle
 		origin_circle = Circle(r,initial_pos)
 		self.insert_circle(origin_circle)
+		print('pack upwards')
 		# pack upwards
 		self._linear_upwards(r, (initial_pos[0] + 2*r, initial_pos[1]))
+		print('pack downards')
 		# pack downwards
-		#self._linear_downwards(r, (initial_pos[0] - 2*r, initial_pos[1]));
+		self._linear_downwards(r, (initial_pos[0] - 2*r, initial_pos[1]));
 
 	def _linear_upwards(self, r, initial_pos):
 
@@ -81,7 +83,12 @@ class Plane(Space):
 				overflow_distance = -(x - r)
 				# shift circle onto layer above
 				x = r
-				y = y + math.sqrt(4 * (r ** 2)  - overflow_distance ** 2)
+				h = math.sqrt(4 * (r ** 2)  - overflow_distance ** 2)
+				# no overlap
+				if h == 0:
+					y = y + 2*r
+				else:
+					y = y + h
 				# reverse packing direction to L->R
 				barrier = self.space_dimensions[0]
 
@@ -91,6 +98,7 @@ class Plane(Space):
 			# insert
 			circle = Circle(r,(x, y))
 			self.insert_circle(circle)
+			print((x,y))
 			# advance to next point
 			if barrier == self.space_dimensions[0]:
 				x = x + 2*r
@@ -128,7 +136,12 @@ class Plane(Space):
 				overflow_distance = (x + r) - self.space_dimensions[0]
 				# shift circle onto layer below
 				x = self.space_dimensions[0] - r
-				y = y - math.sqrt(4 * (r ** 2)  - overflow_distance ** 2)
+				h = math.sqrt(4 * (r ** 2)  - overflow_distance ** 2)
+				# no overlap
+				if h == 0:
+					y =  y - 2*r
+				else:
+					y = y - h 
 				# reverse packing direction to R->L
 				barrier = 0
 
@@ -138,6 +151,7 @@ class Plane(Space):
 			# insert
 			circle = Circle(r,(x, y))
 			self.insert_circle(circle)
+			print((x,y))
 			# advance to next point
 			if barrier == 0:
 				x = x - 2*r
