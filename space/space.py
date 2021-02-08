@@ -7,14 +7,13 @@ from random import randrange
 from abc import ABC, abstractmethod
 
 class Space(ABC):
-	def __init__(self, space_id, space_dimensions):
+	def __init__(self,space_dimensions):
 		"""
 		A general initialization for a given region
 		:param space_id: (str) -> an id to differentiate different spaces with identical dimensions
 		:param space_dimension: tuple -> integer tuple of arbitrary length, describing the space
 		"""
 		
-		self.space_id = space_id;
 		self.space_dimensions = space_dimensions;
 		
 

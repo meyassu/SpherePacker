@@ -6,7 +6,7 @@ from Space.space import Space
 from Sphere.circle import Circle
 
 class Plane(Space):
-	def __init__(self, space_id, space_dimensions):
+	def __init__(self, space_dimensions):
 		"""
 		An initialization for a 2-dimensional space
 		:param space_id: (str) -> an id to differentiate different spaces with identical dimensions
@@ -14,7 +14,7 @@ class Plane(Space):
 		describing the space
 		"""
 
-		super().__init__(space_id,space_dimensions);	 
+		super().__init__(space_dimensions);	 
 
 		# create empty array of circles
 		self.circles = [];
